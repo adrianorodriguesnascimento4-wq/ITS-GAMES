@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ITS GAMES — Loja Gamer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="logo">ITS<span>GAMES</span></div>
+  <div class="search"><input id="search" placeholder="Buscar produtos..."><button onclick="doSearch()">🔎</button></div>
+  <button class="cartBtn" onclick="openCart()">🛒 <b id="cartCount">0</b></button>
+</header>
+<nav>
+  <a href="#inicio">Início</a><a href="#ofertas">Ofertas</a><a href="#jogos">Jogos</a><a href="#hardware">Hardware</a><a href="#suporte">Suporte</a>
+</nav>
+<main>
+<section id="inicio" class="hero">
+  <div><p class="tag">ITS GAMES</p><h1>Seu universo gamer<br><span>começa aqui.</span></h1>
+  <p>Produtos digitais e acessórios para quem leva o jogo a sério.</p>
+  <a class="primary" href="#ofertas">Ver ofertas</a></div>
+</section>
+
+<section class="trust"><div>⚡ <b>Entrega rápida</b><small>Produtos digitais</small></div><div>🔒 <b>Pagamento seguro</b><small>Pix via PicPay</small></div><div>🎮 <b>Feito para gamers</b><small>Loja especializada</small></div></section>
+
+<section id="ofertas"><div class="sectionHead"><h2>🔥 Ofertas</h2><span>Preços demonstrativos</span></div><div id="products" class="grid"></div></section>
+<section id="jogos"><h2>🎮 Jogos</h2><div class="chips"><button onclick="filter('digital')">Produtos digitais</button><button onclick="filter('roblox')">Roblox</button><button onclick="filter('freefire')">Free Fire</button><button onclick="filter('gift')">Gift Cards</button></div></section>
+<section id="hardware"><h2>🖥️ Hardware</h2><div class="hardwareBox">Acessórios gamer entram aqui. Você pode trocar os produtos no arquivo <code>script.js</code>.</div></section>
+<section id="suporte"><h2>💬 Suporte</h2><p>Precisa de ajuda? Configure aqui o canal de atendimento da sua loja antes de publicar.</p></section>
+</main>
+
+<div id="overlay" class="overlay" onclick="closeCart(event)"><aside class="drawer" onclick="event.stopPropagation()">
+  <button class="close" onclick="closeCart()">✕</button><h2>Seu carrinho</h2><div id="cart"></div>
+  <div class="total"><span>Total</span><b id="total">R$ 0,00</b></div>
+  <button class="pay" onclick="checkout()">Pagar com Pix</button>
+  <p class="note">O pagamento será criado pelo servidor usando a integração PicPay configurada pela responsável da loja.</p>
+</aside></div>
+<script src="script.js"></script>
+</body></html>
