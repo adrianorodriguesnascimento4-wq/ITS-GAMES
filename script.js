@@ -1,10 +1,10 @@
 const PRODUCTS=[
-{id:"ff-1000",name:"1.000 Diamantes Free Fire",price:24.90,cat:"freefire",icon:"💎"},
-{id:"rbx-1700",name:"1.700 Robux",price:54.90,cat:"roblox",icon:"🟩"},
-{id:"gp-50",name:"Gift Card Google Play R$50",price:49.90,cat:"gift",icon:"🎁"},
-{id:"fone-rgb",name:"Fone Gamer RGB",price:129.90,cat:"hardware",icon:"🎧"},
-{id:"mouse-gamer",name:"Mouse Gamer",price:79.90,cat:"hardware",icon:"🖱️"},
-{id:"teclado",name:"Teclado Gamer",price:119.90,cat:"hardware",icon:"⌨️"}
+{id:"ff-100",name:"100 Diamantes Free Fire",price:3.00,cat:"freefire",icon:"💎"},
+{id:"ff-310",name:"310 Diamantes Free Fire",price:11.49,cat:"freefire",icon:"💎"},
+{id:"ff-520",name:"520 Diamantes Free Fire",price:17.49,cat:"freefire",icon:"💎"},
+{id:"rbx-40",name:"40 Robux",price:2.49,cat:"roblox",icon:"🟩"},
+{id:"rbx-80",name:"80 Robux",price:4.00,cat:"roblox",icon:"🟩"},
+{id:"rbx-400",name:"400 Robux",price:14.49,cat:"roblox",icon:"🟩"}
 ];
 let cart=JSON.parse(localStorage.getItem("its_cart")||"[]");
 const brl=n=>n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
