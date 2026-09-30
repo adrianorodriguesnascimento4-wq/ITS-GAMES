@@ -22,7 +22,7 @@ async function checkout(){
  if(!cart.length)return alert("Adicione algum produto ao carrinho.");
  const items=cart.map(x=>({id:x.id,name:x.name,quantity:x.q,unit_price:x.price}));
  try{
-   const r=await fetch("/api/create-pix",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items})});
+   const r=await fetch("https://its-games-backend.vercel.app/api/create-pix",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items})});
    const data=await r.json();
    if(!r.ok)throw new Error(data.error||"Não foi possível criar o pagamento.");
    if(data.qr_code||data.pix_copia_e_cola){showPix(data);return}
