@@ -8,7 +8,9 @@ const PRODUCTS = [
   { id: "rbx-400", name: "400 Robux", price: 14.49, cat: "roblox", icon: "🟩" }
 ];
 
-let cart = JSON.parse(localStorage.getItem("its_cart") || "[]");
+// O carrinho começa vazio em cada nova abertura da página.
+// Não reutiliza os produtos salvos de visitas anteriores.
+let cart = [];
 
 const brl = n =>
   Number(n).toLocaleString("pt-BR", {
@@ -16,7 +18,7 @@ const brl = n =>
     currency: "BRL"
   });
 
-// Cria uma arte neon em SVG para cada pacote
+// Arte neon dos produtos
 function productArt(p) {
   const isFF = p.cat === "freefire";
   const amount = p.id === "ff-100" ? "100"
@@ -113,8 +115,6 @@ function add(id) {
 }
 
 function save() {
-  localStorage.setItem("its_cart", JSON.stringify(cart));
-
   cartCount.textContent = cart.reduce(
     (sum, item) => sum + item.q, 0
   );
@@ -123,20 +123,35 @@ function save() {
 }
 
 function renderCart() {
-  cart.innerHTML = cart.length
-    ? cart.map(item => `
+  if (cart.length) {
+    cart.innerHTML = `
+      <button class="clearCart" onclick="clearCart()">
+        🧹 Esvaziar carrinho
+      </button>
+      ${cart.map(item => `
         <div class="cartItem">
           <div>
             <b>${item.name}</b><br>
             <span>${brl(item.price)} × ${item.q}</span>
+            <br>
+            <strong>${brl(item.price * item.q)}</strong>
           </div>
           <div class="qty">
-            <button onclick="change('${item.id}', -1)">−</button>
-            <button onclick="change('${item.id}', 1)">+</button>
+            <button aria-label="Diminuir quantidade"
+              onclick="change('${item.id}', -1)">−</button>
+            <button aria-label="Aumentar quantidade"
+              onclick="change('${item.id}', 1)">+</button>
+            <button class="removeItem"
+              aria-label="Remover ${item.name}"
+              onclick="removeItem('${item.id}')">🗑️</button>
           </div>
         </div>
-      `).join("")
-    : '<p style="color:#8090a5">Seu carrinho está vazio.</p>';
+      `).join("")}
+    `;
+  } else {
+    cart.innerHTML =
+      '<p style="color:#8090a5">Seu carrinho está vazio.</p>';
+  }
 
   total.textContent = brl(
     cart.reduce((sum, item) => sum + item.price * item.q, 0)
@@ -150,9 +165,22 @@ function change(id, delta) {
   item.q += delta;
 
   if (item.q <= 0) {
-    cart = cart.filter(x => x.id !== id);
+    removeItem(id);
+    return;
   }
 
+  save();
+}
+
+function removeItem(id) {
+  cart = cart.filter(item => item.id !== id);
+  save();
+}
+
+function clearCart() {
+  if (!cart.length) return;
+
+  cart = [];
   save();
 }
 
@@ -306,4 +334,5 @@ function showPix(data) {
 
 render();
 save();
+
 
