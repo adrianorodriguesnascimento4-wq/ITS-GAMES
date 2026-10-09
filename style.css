@@ -92,3 +92,16 @@ main>section:not(.hero){max-width:1200px;margin:48px auto;padding:0 18px}
 @media(max-width:800px){.top{padding:0 3%;gap:8px}.logo{font-size:21px}.search{max-width:none}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{margin:18px 12px;padding:38px 25px}.heroArt{flex-basis:190px;transform:scale(.85)}.trust{padding:0 12px;gap:9px}.trust div{padding:14px}.trust b{font-size:13px}.trust small{font-size:11px}nav{padding-left:3%;gap:22px}}
 @media(max-width:560px){.top{height:62px}.logo{font-size:18px}.search input{width:60px;padding:10px;font-size:12px}.search button,.cartBtn{font-size:17px;padding:8px}.hero{min-height:0;padding:34px 23px}.hero h1{font-size:36px;letter-spacing:-1.3px}.heroArt{display:none}.trust{grid-template-columns:1fr}.trust div{padding:15px}.trust small{margin-top:5px}.sectionHead{align-items:flex-start}.sectionHead>span{font-size:11px;text-align:right;padding-top:5px}.grid{gap:10px}.card{padding:9px;border-radius:13px}.pic{height:125px;font-size:48px}.card h3{font-size:13px;min-height:37px;margin:11px 0 7px}.price{font-size:19px}.add{font-size:12px;padding:11px 5px}.gameHeading{padding:17px;gap:11px;flex-wrap:wrap}.gameIcon{width:48px;height:48px;flex-basis:48px;font-size:27px}.gameHeading h2{font-size:20px}.gameHeading .outlineBtn{margin-left:59px}.support{padding:22px}.support h2{font-size:22px}.supportIcon{font-size:30px}}
 @media(prefers-reduced-motion:reduce){,::before,::after{scroll-behavior:auto!important;transition:none!important}}
+/* Ajuste das artes neon dos produtos */
+.productArt {
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.productArt svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
