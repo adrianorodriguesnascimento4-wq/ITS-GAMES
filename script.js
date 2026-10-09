@@ -16,10 +16,77 @@ const brl = n =>
     currency: "BRL"
   });
 
+// Cria uma arte neon em SVG para cada pacote
+function productArt(p) {
+  const isFF = p.cat === "freefire";
+  const amount = p.id === "ff-100" ? "100"
+    : p.id === "ff-310" ? "310"
+    : p.id === "ff-520" ? "520"
+    : p.id === "rbx-40" ? "40"
+    : p.id === "rbx-80" ? "80" : "400";
+
+  const color = isFF ? "#00aaff" : "#39ff14";
+  const title = isFF ? "DIAMANTES" : "ROBUX";
+  const uid = p.id.replace(/[^a-z0-9]/gi, "");
+
+  const art = isFF
+    ? `<g>
+        <path d="M45 54 L64 35 L106 35 L125 54 L85 108 Z"
+          fill="url(#gem-${uid})" stroke="#b9f4ff" stroke-width="2"/>
+        <path d="M45 54 L72 54 L64 35 M125 54 L98 54 L106 35
+          M72 54 L85 108 L98 54 M72 54 L98 54"
+          fill="none" stroke="#d8f8ff" stroke-width="1.5"/>
+      </g>`
+    : `<g transform="rotate(12 85 70)">
+        <rect x="49" y="34" width="72" height="72" rx="9"
+          fill="url(#gem-${uid})" stroke="#c3ffb2" stroke-width="2"/>
+        <rect x="72" y="57" width="26" height="26" rx="2"
+          fill="#07151a" stroke="#b2ff9d" stroke-width="2"/>
+      </g>`;
+
+  return `<svg viewBox="0 0 170 145"
+    role="img" aria-label="${p.name}"
+    xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bg-${uid}">
+        <stop offset="0" stop-color="${color}" stop-opacity=".30"/>
+        <stop offset="1" stop-color="#06101e" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="gem-${uid}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ffffff"/>
+        <stop offset=".35" stop-color="${color}"/>
+        <stop offset="1" stop-color="${isFF ? "#0646a8" : "#087b24"}"/>
+      </linearGradient>
+      <filter id="glow-${uid}">
+        <feGaussianBlur stdDeviation="5"/>
+      </filter>
+    </defs>
+    <rect width="170" height="145" rx="12" fill="#071323"/>
+    <rect width="170" height="145" rx="12" fill="url(#bg-${uid})"/>
+    <ellipse cx="85" cy="105" rx="53" ry="12"
+      fill="${color}" opacity=".6" filter="url(#glow-${uid})"/>
+    <ellipse cx="85" cy="111" rx="43" ry="7"
+      fill="none" stroke="${color}" stroke-width="2" opacity=".8"/>
+    <g fill="${color}" opacity=".7">
+      <circle cx="32" cy="42" r="2"/>
+      <circle cx="138" cy="35" r="2.5"/>
+      <circle cx="129" cy="85" r="2"/>
+      <circle cx="44" cy="91" r="1.5"/>
+    </g>
+    ${art}
+    <rect x="8" y="8" width="56" height="23" rx="6"
+      fill="#071323" stroke="${color}"/>
+    <text x="36" y="24" text-anchor="middle" fill="#fff"
+      font-size="12" font-weight="bold">${amount}</text>
+    <text x="85" y="133" text-anchor="middle" fill="${color}"
+      font-size="9" font-weight="bold" letter-spacing="1">${title}</text>
+  </svg>`;
+}
+
 function render(list = PRODUCTS) {
   products.innerHTML = list.map(p => `
     <article class="card">
-      <div class="pic">${p.icon}</div>
+      <div class="pic productArt">${productArt(p)}</div>
       <h3>${p.name}</h3>
       <div class="price">${brl(p.price)}</div>
       <button class="add" onclick="add('${p.id}')">
@@ -239,3 +306,4 @@ function showPix(data) {
 
 render();
 save();
+
