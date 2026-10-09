@@ -1,39 +1,124 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ITS GAMES — Loja Gamer</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070b12">
+  <meta name="description" content="ITS GAMES ONLINE — recargas digitais para Free Fire e Roblox.">
+  <title>ITS GAMES — Recargas Gamer</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="top">
-  <div class="logo">ITS<span>GAMES</span></div>
-  <div class="search"><input id="search" placeholder="Buscar produtos..."><button onclick="doSearch()">🔎</button></div>
-  <button class="cartBtn" onclick="openCart()">🛒 <b id="cartCount">0</b></button>
+  <a class="logo" href="#inicio">ITS<span>GAMES</span></a>
+
+  <div class="search">
+    <input id="search" placeholder="Buscar diamantes ou Robux..." aria-label="Buscar produtos">
+    <button onclick="doSearch()" aria-label="Buscar">🔎</button>
+  </div>
+
+  <button class="cartBtn" onclick="openCart()" aria-label="Abrir carrinho">
+    🛒 <b id="cartCount">0</b>
+  </button>
 </header>
-<nav>
-  <a href="#inicio">Início</a><a href="#ofertas">Ofertas</a><a href="#jogos">Jogos</a><a href="#hardware">Hardware</a><a href="#suporte">Suporte</a>
+
+<nav aria-label="Navegação principal">
+  <a href="#inicio">Início</a>
+  <a href="#ofertas">Ofertas</a>
+  <a href="#freefire">Free Fire</a>
+  <a href="#roblox">Roblox</a>
+  <a href="#suporte">Suporte</a>
 </nav>
+
 <main>
-<section id="inicio" class="hero">
-  <div><p class="tag">ITS GAMES</p><h1>Seu universo gamer<br><span>começa aqui.</span></h1>
-  <p>Produtos digitais e acessórios para quem leva o jogo a sério.</p>
-  <a class="primary" href="#ofertas">Ver ofertas</a></div>
-</section>
+  <section id="inicio" class="hero">
+    <div class="heroContent">
+      <p class="tag">⚡ ITS GAMES ONLINE</p>
+      <h1>Sua próxima recarga<br><span>começa aqui.</span></h1>
+      <p>Diamantes e Robux para você curtir seus jogos favoritos.</p>
+      <a class="primary" href="#ofertas">Explorar recargas →</a>
+      <div class="heroLabels">
+        <span>🎮 Universo gamer</span>
+        <span>💎 Recargas digitais</span>
+      </div>
+    </div>
+    <div class="heroArt" aria-hidden="true">
+      <div class="heroGlow"></div>
+      <div class="heroDiamond">💎</div>
+      <div class="heroCoin">🟩</div>
+      <div class="heroCaption">LEVEL UP YOUR GAME</div>
+    </div>
+  </section>
 
-<section class="trust"><div>⚡ <b>Entrega rápida</b><small>Produtos digitais</small></div><div>🔒 <b>Pagamento seguro</b><small>Pix via PicPay</small></div><div>🎮 <b>Feito para gamers</b><small>Loja especializada</small></div></section>
+  <section class="trust">
+    <div>⚡ <b>Produtos digitais</b><small>Recargas para seus jogos</small></div>
+    <div>🛒 <b>Compra simplificada</b><small>Escolha seu pacote favorito</small></div>
+    <div>🎮 <b>Feito para gamers</b><small>Free Fire e Roblox</small></div>
+  </section>
 
-<section id="ofertas"><div class="sectionHead"><h2>🔥 Ofertas</h2><span>Preços demonstrativos</span></div><div id="products" class="grid"></div></section>
-<section id="jogos"><h2>🎮 Jogos</h2><div class="chips"><button onclick="filter('digital')">Produtos digitais</button><button onclick="filter('roblox')">Roblox</button><button onclick="filter('freefire')">Free Fire</button><button onclick="filter('gift')">Gift Cards</button></div></section>
-<section id="hardware"><h2>🖥️ Hardware</h2><div class="hardwareBox">Acessórios gamer entram aqui. Você pode trocar os produtos no arquivo <code>script.js</code>.</div></section>
-<section id="suporte"><h2>💬 Suporte</h2><p>Precisa de ajuda? Configure aqui o canal de atendimento da sua loja antes de publicar.</p></section>
+  <section id="ofertas">
+    <div class="sectionHead">
+      <div>
+        <p class="tag">ESCOLHA SUA RECARGA</p>
+        <h2>🔥 Ofertas em destaque</h2>
+      </div>
+      <span>6 pacotes disponíveis</span>
+    </div>
+    <div id="products" class="grid"></div>
+  </section>
+
+  <section id="freefire" class="gameSection">
+    <div class="gameHeading ffHeading">
+      <span class="gameIcon">💎</span>
+      <div>
+        <p class="tag">BOOYAH!</p>
+        <h2>Recargas Free Fire</h2>
+        <p>Escolha seu pacote de diamantes.</p>
+      </div>
+      <button class="outlineBtn" onclick="filter('freefire')">Ver pacotes</button>
+    </div>
+  </section>
+
+  <section id="roblox" class="gameSection">
+    <div class="gameHeading rbHeading">
+      <span class="gameIcon">🟩</span>
+      <div>
+        <p class="tag">EXPLORE MAIS</p>
+        <h2>Roblox</h2>
+        <p>Confira os pacotes de Robux disponíveis.</p>
+      </div>
+      <button class="outlineBtn" onclick="filter('roblox')">Ver pacotes</button>
+    </div>
+  </section>
+
+  <section id="suporte" class="support">
+    <div>
+      <p class="tag">PRECISA DE AJUDA?</p>
+      <h2>Estamos aqui para ajudar.</h2>
+      <p>Confira os detalhes da sua compra antes de finalizar.</p>
+    </div>
+    <span class="supportIcon">💬</span>
+  </section>
 </main>
 
-<div id="overlay" class="overlay" onclick="closeCart(event)"><aside class="drawer" onclick="event.stopPropagation()">
-  <button class="close" onclick="closeCart()">✕</button><h2>Seu carrinho</h2><div id="cart"></div>
-  <div class="total"><span>Total</span><b id="total">R$ 0,00</b></div>
-  <button class="pay" onclick="checkout()">Pagar com Pix</button>
-  <p class="note">O pagamento será criado pelo servidor usando a integração PicPay configurada pela responsável da loja.</p>
-</aside></div>
+<footer class="footer">
+  <a class="logo" href="#inicio">ITS<span>GAMES</span></a>
+  <p>ITS GAMES ONLINE © 2026</p>
+  <small>Produtos digitais para gamers.</small>
+</footer>
+
+<div id="overlay" class="overlay" onclick="closeCart(event)">
+  <aside class="drawer" onclick="event.stopPropagation()">
+    <button class="close" onclick="closeCart()">✕</button>
+    <h2>Seu carrinho</h2>
+    <div id="cart"></div>
+    <div class="total"><span>Total</span><b id="total">R$ 0,00</b></div>
+    <button class="pay" onclick="checkout()">Continuar para pagamento</button>
+    <p class="note">Confira os produtos e o valor total antes de prosseguir. A disponibilidade do pagamento depende da configuração do servidor.</p>
+  </aside>
+</div>
+
 <script src="script.js"></script>
-</body></html>
+</body>
+</html>
