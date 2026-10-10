@@ -5,7 +5,7 @@
 // Insira a chave Pix da loja entre as aspas.
 // ATENÇÃO: em um repositório público, esta chave
 // ficará visível para qualquer pessoa.
-const PIX_KEY = "INSIRA_SUA_CHAVE_PIX_AQUI";
+const PIX_KEY = "8505e901-353c-42c1-baa2-a0b532f939b7";
 
 const PRODUCTS = [
   { id: "ff-100", name: "100 Diamantes Free Fire", price: 3.00, cat: "freefire", icon: "💎" },
