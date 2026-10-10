@@ -1,19 +1,28 @@
+
 // ============================================
 // ITS GAMES — CHECKOUT MANUAL VIA PIX
 // ============================================
 
-// Insira a chave Pix da loja entre as aspas.
 // ATENÇÃO: em um repositório público, esta chave
 // ficará visível para qualquer pessoa.
 const PIX_KEY = "8505e901-353c-42c1-baa2-a0b532f939b7";
 
 const PRODUCTS = [
+  // FREE FIRE
   { id: "ff-100", name: "100 Diamantes Free Fire", price: 3.00, cat: "freefire", icon: "💎" },
+  { id: "ff-210", name: "210 Diamantes Free Fire", price: 9.49, cat: "freefire", icon: "💎" },
   { id: "ff-310", name: "310 Diamantes Free Fire", price: 11.49, cat: "freefire", icon: "💎" },
   { id: "ff-520", name: "520 Diamantes Free Fire", price: 17.49, cat: "freefire", icon: "💎" },
+  { id: "ff-1060", name: "1.060 Diamantes Free Fire", price: 37.49, cat: "freefire", icon: "💎" },
+  { id: "ff-2180", name: "2.180 Diamantes Free Fire", price: 65.49, cat: "freefire", icon: "💎" },
+
+  // ROBLOX
   { id: "rbx-40", name: "40 Robux", price: 2.49, cat: "roblox", icon: "🟩" },
   { id: "rbx-80", name: "80 Robux", price: 4.00, cat: "roblox", icon: "🟩" },
-  { id: "rbx-400", name: "400 Robux", price: 14.49, cat: "roblox", icon: "🟩" }
+  { id: "rbx-160", name: "160 Robux", price: 6.00, cat: "roblox", icon: "🟩" },
+  { id: "rbx-400", name: "400 Robux", price: 14.49, cat: "roblox", icon: "🟩" },
+  { id: "rbx-800", name: "800 Robux", price: 49.00, cat: "roblox", icon: "🟩" },
+  { id: "rbx-1700", name: "1.700 Robux", price: 95.00, cat: "roblox", icon: "🟩" }
 ];
 
 // Carrinho começa vazio
@@ -28,13 +37,20 @@ const brl = n =>
 // Artes neon
 function productArt(p) {
   const isFF = p.cat === "freefire";
+
   const amount = {
     "ff-100": "100",
+    "ff-210": "210",
     "ff-310": "310",
     "ff-520": "520",
+    "ff-1060": "1060",
+    "ff-2180": "2180",
     "rbx-40": "40",
     "rbx-80": "80",
-    "rbx-400": "400"
+    "rbx-160": "160",
+    "rbx-400": "400",
+    "rbx-800": "800",
+    "rbx-1700": "1700"
   }[p.id];
 
   const color = isFF ? "#00aaff" : "#39ff14";
