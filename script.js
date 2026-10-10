@@ -1,3 +1,11 @@
+// ============================================
+// ITS GAMES — CHECKOUT MANUAL VIA PIX
+// ============================================
+
+// Insira a chave Pix da loja entre as aspas.
+// ATENÇÃO: em um repositório público, esta chave
+// ficará visível para qualquer pessoa.
+const PIX_KEY = "INSIRA_SUA_CHAVE_PIX_AQUI";
 
 const PRODUCTS = [
   { id: "ff-100", name: "100 Diamantes Free Fire", price: 3.00, cat: "freefire", icon: "💎" },
@@ -8,9 +16,8 @@ const PRODUCTS = [
   { id: "rbx-400", name: "400 Robux", price: 14.49, cat: "roblox", icon: "🟩" }
 ];
 
-// O carrinho começa vazio em cada nova abertura da página.
-// Não reutiliza os produtos salvos de visitas anteriores.
-let cart = [];
+// Carrinho começa vazio
+let cartItems = [];
 
 const brl = n =>
   Number(n).toLocaleString("pt-BR", {
@@ -18,14 +25,17 @@ const brl = n =>
     currency: "BRL"
   });
 
-// Arte neon dos produtos
+// Artes neon
 function productArt(p) {
   const isFF = p.cat === "freefire";
-  const amount = p.id === "ff-100" ? "100"
-    : p.id === "ff-310" ? "310"
-    : p.id === "ff-520" ? "520"
-    : p.id === "rbx-40" ? "40"
-    : p.id === "rbx-80" ? "80" : "400";
+  const amount = {
+    "ff-100": "100",
+    "ff-310": "310",
+    "ff-520": "520",
+    "rbx-40": "40",
+    "rbx-80": "80",
+    "rbx-400": "400"
+  }[p.id];
 
   const color = isFF ? "#00aaff" : "#39ff14";
   const title = isFF ? "DIAMANTES" : "ROBUX";
@@ -102,12 +112,12 @@ function add(id) {
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
 
-  const item = cart.find(x => x.id === id);
+  const item = cartItems.find(x => x.id === id);
 
   if (item) {
     item.q++;
   } else {
-    cart.push({ ...p, q: 1 });
+    cartItems.push({ ...p, q: 1 });
   }
 
   save();
@@ -115,7 +125,7 @@ function add(id) {
 }
 
 function save() {
-  cartCount.textContent = cart.reduce(
+  cartCount.textContent = cartItems.reduce(
     (sum, item) => sum + item.q, 0
   );
 
@@ -123,17 +133,16 @@ function save() {
 }
 
 function renderCart() {
-  if (cart.length) {
+  if (cartItems.length) {
     cart.innerHTML = `
       <button class="clearCart" onclick="clearCart()">
         🧹 Esvaziar carrinho
       </button>
-      ${cart.map(item => `
+      ${cartItems.map(item => `
         <div class="cartItem">
           <div>
             <b>${item.name}</b><br>
-            <span>${brl(item.price)} × ${item.q}</span>
-            <br>
+            <span>${brl(item.price)} × ${item.q}</span><br>
             <strong>${brl(item.price * item.q)}</strong>
           </div>
           <div class="qty">
@@ -154,12 +163,12 @@ function renderCart() {
   }
 
   total.textContent = brl(
-    cart.reduce((sum, item) => sum + item.price * item.q, 0)
+    cartItems.reduce((sum, item) => sum + item.price * item.q, 0)
   );
 }
 
 function change(id, delta) {
-  const item = cart.find(x => x.id === id);
+  const item = cartItems.find(x => x.id === id);
   if (!item) return;
 
   item.q += delta;
@@ -173,14 +182,13 @@ function change(id, delta) {
 }
 
 function removeItem(id) {
-  cart = cart.filter(item => item.id !== id);
+  cartItems = cartItems.filter(item => item.id !== id);
   save();
 }
 
 function clearCart() {
-  if (!cart.length) return;
-
-  cart = [];
+  if (!cartItems.length) return;
+  cartItems = [];
   save();
 }
 
@@ -201,7 +209,6 @@ function filter(cat) {
 
 function doSearch() {
   const query = search.value.trim().toLowerCase();
-
   render(
     PRODUCTS.filter(p => p.name.toLowerCase().includes(query))
   );
@@ -211,74 +218,54 @@ search.addEventListener("keydown", event => {
   if (event.key === "Enter") doSearch();
 });
 
+// Copiar texto
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    document.body.appendChild(field);
+    field.select();
+
+    let ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } catch {
+      ok = false;
+    }
+
+    field.remove();
+    return ok;
+  }
+}
+
+// Checkout manual
 async function checkout() {
-  if (!cart.length) {
+  if (!cartItems.length) {
     alert("Adicione algum produto ao carrinho.");
     return;
   }
 
-  const items = cart.map(item => ({
-    id: item.id,
-    quantity: item.q
-  }));
-
-  try {
-    const response = await fetch(
-      "https://its-games-backend.vercel.app/api/create-pix",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ items })
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Erro retornado pelo servidor:", data);
-
-      const details = data.details;
-      const message =
-        (details && (details.message || details.error)) ||
-        data.error ||
-        "Não foi possível criar o Pix.";
-
-      throw new Error(message);
-    }
-
-    const pixCode =
-      data.pix_copia_e_cola ||
-      data.qr_code ||
-      "";
-
-    if (pixCode || data.qr_code_base64) {
-      showPix(data);
-      return;
-    }
-
-    if (data.checkout_url) {
-      location.href = data.checkout_url;
-      return;
-    }
-
-    console.error("Resposta inesperada do servidor:", data);
-
-    throw new Error(
-      "O servidor respondeu, mas não retornou o código Pix."
-    );
-  } catch (error) {
-    console.error("Falha no checkout:", error);
-
-    alert(
-      "Não foi possível gerar o Pix.\n\nMotivo: " +
-      error.message
-    );
+  if (
+    !PIX_KEY ||
+    PIX_KEY === "INSIRA_SUA_CHAVE_PIX_AQUI"
+  ) {
+    alert("A chave Pix da loja ainda não foi configurada.");
+    return;
   }
-}
 
-function showPix(data) {
+  const orderTotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.q, 0
+  );
+
+  const orderText = cartItems.map(item =>
+    `${item.name} × ${item.q} — ${brl(item.price * item.q)}`
+  ).join("\n");
+
   const box = document.createElement("div");
   box.className = "pixModal";
 
@@ -291,48 +278,84 @@ function showPix(data) {
   close.onclick = () => box.remove();
 
   const heading = document.createElement("h2");
-  heading.textContent = "Pagamento Pix";
+  heading.textContent = "Finalizar pedido";
 
-  card.append(close, heading);
+  const details = document.createElement("pre");
+  details.style.whiteSpace = "pre-wrap";
+  details.textContent = orderText;
 
-  if (data.qr_code_base64) {
-    const image = document.createElement("img");
-    image.alt = "QR Code Pix";
-    image.src = data.qr_code_base64.startsWith("data:")
-      ? data.qr_code_base64
-      : "data:image/png;base64," + data.qr_code_base64;
+  const totalLine = document.createElement("h3");
+  totalLine.textContent = `Total: ${brl(orderTotal)}`;
 
-    card.appendChild(image);
-  }
+  const keyLabel = document.createElement("p");
+  keyLabel.textContent = "Chave Pix da loja";
 
-  const label = document.createElement("p");
-  label.textContent = "Pix Copia e Cola";
+  const keyField = document.createElement("textarea");
+  keyField.readOnly = true;
+  keyField.value = PIX_KEY;
+  keyField.style.width = "100%";
+  keyField.style.boxSizing = "border-box";
+  keyField.style.minHeight = "65px";
 
-  const textarea = document.createElement("textarea");
-  textarea.readOnly = true;
-  textarea.value = data.pix_copia_e_cola || data.qr_code || "";
+  const copyKey = document.createElement("button");
+  copyKey.className = "pay";
+  copyKey.textContent = "Copiar chave Pix";
 
-  const copy = document.createElement("button");
-  copy.className = "pay";
-  copy.textContent = "Copiar código Pix";
+  copyKey.onclick = async () => {
+    const ok = await copyText(PIX_KEY);
+    copyKey.textContent = ok
+      ? "Chave copiada!"
+      : "Selecione a chave para copiar";
 
-  copy.onclick = async () => {
-    try {
-      await navigator.clipboard.writeText(textarea.value);
-      copy.textContent = "Copiado!";
-    } catch {
-      textarea.focus();
-      textarea.select();
-      alert("Selecione e copie o código Pix manualmente.");
+    if (!ok) {
+      keyField.focus();
+      keyField.select();
     }
   };
 
-  card.append(label, textarea, copy);
+  const instructions = document.createElement("p");
+  instructions.textContent =
+    `Faça o Pix de ${brl(orderTotal)} usando a chave acima. ` +
+    "Informe esse valor ao pagar.";
+
+  const warning = document.createElement("p");
+  warning.textContent =
+    "A loja precisa confirmar o recebimento diretamente no PicPay. " +
+    "O comprovante sozinho não confirma o pagamento. " +
+    "O produto só será liberado após a confirmação.";
+
+  const copyOrder = document.createElement("button");
+  copyOrder.className = "pay";
+  copyOrder.textContent = "Copiar resumo do pedido";
+
+  copyOrder.onclick = async () => {
+    const summary =
+      `ITS GAMES — PEDIDO\n\n${orderText}\n\n` +
+      `TOTAL: ${brl(orderTotal)}\n` +
+      "Aguardando confirmação do pagamento pela loja.";
+
+    const ok = await copyText(summary);
+    copyOrder.textContent = ok
+      ? "Resumo copiado!"
+      : "Não foi possível copiar";
+  };
+
+  card.append(
+    close,
+    heading,
+    details,
+    totalLine,
+    keyLabel,
+    keyField,
+    copyKey,
+    instructions,
+    warning,
+    copyOrder
+  );
+
   box.appendChild(card);
   document.body.appendChild(box);
 }
 
 render();
 save();
-
-
